@@ -10,6 +10,7 @@ import {
     Image,
     Text,
     View,
+    Navigator,
     ToastAndroid
 } from 'react-native';
 
@@ -86,6 +87,7 @@ import {
 
 
 var Title = require('./Title');
+
 
 class AwesomeProject extends Component {
     // Initialize the hardcoded data
@@ -232,9 +234,7 @@ class AwesomeProject extends Component {
     }
 
 
-
-
-    render() {
+    _renderScreen(route, navigator) {
         var content = this.state.loaded ?
             <ListView
                 dataSource={this.state.dataSource}
@@ -268,23 +268,23 @@ class AwesomeProject extends Component {
             <View style={[styles.vertical, { flex: 1 }]}>
                 <Title
                     onBack={() => { ToastAndroid.showWithGravity('back', ToastAndroid.SHORT, ToastAndroid.CENTER) } }
-                    title={'2016足球联赛'} />
-                <Text
-                    style={[styles.textCenter, { height: 45, fontWeight: this.state.textWeight }]}
-                    selectable={true}
+                    title={route.title} />
 
-                    numberOfLines={1}
-                    ellipsizeMode={'tail'}//字数过长的时候省略的位置:默认是tail,可选值有'head', 'middle', 'tail', 'clip',PS:clip只在ios上有效
-                    >{'2016年'}
-                    <Text >
-                        <Text style={{ color: 'green' }}
-                            onPress={() => { this.setState({ textWeight: this.state.textWeight === 'normal' ? 'bold' : 'normal' }) } }>
-                            {'足球联赛'}
-                        </Text>
-                    </Text>
-                </Text>
                 {content}
             </View>
+        )
+    }
+
+
+
+
+    render() {
+
+        return (
+            <Navigator
+                initialRoute={{ title: '2016足球联赛', index: 0 }}
+                renderScene={this._renderScreen.bind(this)}
+                />
         )
 
     }
